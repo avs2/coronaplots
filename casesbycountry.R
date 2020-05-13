@@ -134,8 +134,8 @@ p <- country_cases %>%
                                               frame.colour = "black",
                                               ticks.colour = "black",
                                               draw.ulim = FALSE, draw.llim = FALSE)) +
-  scale_x_continuous(name = "Active cases", trans = "log10", limits = c(10, 1E6), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5, 1E6)) +
-  scale_y_continuous(name = "New cases (5 day average)", trans = "log10", limits = c(10, 1E5), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5)) +
+  scale_x_continuous(name = "Active cases", trans = "log10", limits = c(10, NA), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5, 1E6)) +
+  scale_y_continuous(name = "New cases (5 day average)", trans = "log10", limits = c(10, NA), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5)) +
   transition_reveal(date) +
   theme_classic() +
   theme(panel.border = element_blank(),
