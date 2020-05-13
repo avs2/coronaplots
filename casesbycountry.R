@@ -155,7 +155,7 @@ p <- country_cases %>%
 # Create GIF
 animate(p, 
         fps = 15, duration = 30,
-        renderer = gifski_renderer("virusevolution.gif"), 
+        renderer = gifski_renderer("casesbycountry.gif"), 
         type = "cairo",
         end_pause = 60,
         width = 1200, height = 800, res = 100)
