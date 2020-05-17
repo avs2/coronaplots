@@ -89,7 +89,7 @@ p <- county_map %>%
   ) + 
   transition_time(time = date) +
   labs(
-    title = "Number of New Confirmed COVID-19 Cases in Past 7 Days per US County", 
+    title = "Number of New Confirmed COVID-19 Cases in Past 7 Days by County", 
     subtitle = "Date: {frame_time}",
     caption = "Data: Johns Hopkins CSSE"
   ) +
@@ -113,18 +113,18 @@ p <- county_map %>%
   )
 
 anim_params <- list(
-  fps = 3,
+  fps = 5,
   animation_time = 30,
   end_pause_seconds = 4
 )
 
-# Warning! Rendering can take a very long time!
+# Warning: rendering can take a very long time!
 animate(
   p,
   fps = anim_params$fps, 
   duration = anim_params$animation_time + anim_params$end_pause_seconds,
   end_pause = anim_params$fps*anim_params$end_pause_seconds,
   type = "cairo",
-  renderer = gifski_renderer("uscountycases3fps.gif"),
+  renderer = gifski_renderer("uscountycases.gif"),
   width = 1200, height = 800, res = 100
 )
