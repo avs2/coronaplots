@@ -91,13 +91,15 @@ country_cases <- country_cases %>%
 ##                              Plot                             -
 ##----------------------------------------------------------------
 
-# Select countries with most confirmed at latest date
+# Label countries that at any poitn in time whre in the top 20 of confirmed cases
 countries_to_label <- country_cases %>%
   ungroup() %>%
-  filter(date == max(date)) %>%
+  group_by(date) %>%
+  filter(date >= as.Date("2020-02-01")) %>%
   top_n(n = 20, wt = confirmed) %>%
+  ungroup() %>%
   select(country) %>%
-  as.matrix() %>% c()
+  as.matrix() %>% c() %>% unique()
 
 # Manually add some other countries
 countries_to_label <- c("China", 
@@ -113,19 +115,19 @@ countries_to_label <- c("China",
                         "Poland",
                         "Turkey",
                         "Ecuador",
+                        "South Korea",
                         countries_to_label) %>% unique()
 
 # Make the animated plot
 p <- country_cases %>%
   filter(confirmed >= 10) %>%
-  mutate(label = if_else(country %in% countries_to_label, "yes", "no")) %>%
   ggplot(aes(x = active, y = confirmed_new_avg, group = country, label = country)) +
   geom_line(color = "grey") +
   geom_point(aes(fill = active_pc), color = "black", size = 2.5, shape = 21) +
   geom_label(data = . %>% filter(country %in% countries_to_label), 
              aes(label = country), hjust = 1.1, vjust = -0.1) +
   scale_fill_distiller(name = "Active cases per 1M population (2018)", trans = "log10", palette = "YlOrRd", direction = 1,
-                       limits = c(0.1, 1E4), breaks = c(0.1, 1, 1E1, 1E2, 1E3, 1E4), labels = label_number_si(),
+                       limits = c(0.1, NA), breaks = c(0.1, 1, 1E1, 1E2, 1E3, 1E4, 1E5), labels = label_number_si(),
                        guide = guide_colorbar(direction = "horizontal",
                                               title.position = "top",
                                               label.position = "bottom",
@@ -134,8 +136,8 @@ p <- country_cases %>%
                                               frame.colour = "black",
                                               ticks.colour = "black",
                                               draw.ulim = FALSE, draw.llim = FALSE)) +
-  scale_x_continuous(name = "Active cases", trans = "log10", limits = c(10, NA), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5, 1E6)) +
-  scale_y_continuous(name = "New cases (5 day average)", trans = "log10", limits = c(10, NA), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5)) +
+  scale_x_continuous(name = "Active cases", trans = "log10", limits = c(10, NA), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5, 1E6, 1E7)) +
+  scale_y_continuous(name = "New cases (5 day average)", trans = "log10", limits = c(10, NA), labels = comma, breaks = c(1E1, 1E2, 1E3, 1E4, 1E5, 1E6)) +
   transition_reveal(date) +
   theme_classic() +
   theme(panel.border = element_blank(),
@@ -148,7 +150,7 @@ p <- country_cases %>%
         legend.justification = c("left", "top"),
         legend.margin = margin(6, 11, 6, 11)) +
   annotation_logticks() +
-  labs(title = "COVID-19: New cases vs. Active cases", 
+  labs(title = "New vs. Active COVID-19 Cases by Country", 
        subtitle = "Date: {frame_along}", 
        caption = "Data: Johns Hopkins CSSE and World Bank")
 
