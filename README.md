@@ -6,3 +6,6 @@ Some animated plots of corona virus data. The usual disclaimers about confirmed 
 
 ## New cases by county (US)
 ![Even more awesome plot](uscountycases.gif)
+
+## New cases by country
+![Most awesome plot](worldnewcountrycases.gif)
